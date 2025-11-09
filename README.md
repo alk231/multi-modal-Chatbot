@@ -1,116 +1,97 @@
 <img width="1906" height="894" alt="image" src="https://github.com/user-attachments/assets/dc247732-e80d-423a-880f-ec97c8338764" />
 
 Multimodal RAG Chatbot
-This project is a Multimodal Retrieval-Augmented Generation (RAG) chatbot that can understand and answer questions from various types of inputs. You can upload documents, websites, YouTube videos, audio files, and even images. The system extracts text, stores it in a vector database, and uses a Large Language Model (LLM) to answer questions based on the stored knowledge.
 
-Key Features
-FeatureDescriptionPDF / DOCX / TXT SupportExtracts text from documents and adds it to the knowledge base.Audio TranscriptionConverts audio to text using Whisper and stores it for querying.Website Content ExtractionFetches and processes content directly from a URL.YouTube Transcript IntegrationRetrieves subtitles from YouTube videos and adds them to the vector store.Image Question AnsweringYou can upload an image and ask questions about it.Persistent Vector MemoryAll uploaded data is stored in FAISS and remains available across sessions.
+A Retrieval-Augmented Generation (RAG) system that can understand and answer questions across multiple data formats.
+The chatbot builds its own knowledge base from PDFs, DOCX, text files, websites, YouTube transcripts, audio, and images, and answers queries using an LLM.
 
-Tech Stack
-LayerTools UsedBackendPython, Flask, LangChainLLMGroq API (qwen/qwen3-32b / llava-v1.6-34b)Embeddingssentence-transformers/all-MiniLM-L6-v2Vector StoreFAISS (persistent storage)Audio ProcessingOpenAI WhisperFrontendReact + Tailwind CSS
+Features
+
+Upload PDF / DOCX / TXT files → text is extracted and stored.
+
+Extract content directly from websites using URL.
+
+Fetch and index YouTube transcripts automatically.
+
+Transcribe audio to text using Whisper.
+
+Ask questions about images (vision-enabled inference).
+
+All processed text is stored in a FAISS vector database, allowing contextual querying.
+
+Architecture
+
+| Component           | Technology                               |
+| ------------------- | ---------------------------------------- |
+| Backend             | Flask + LangChain                        |
+| LLM                 | Groq (`qwen3-32b` / `llava-v1.6-34b`)    |
+| Embeddings          | `sentence-transformers/all-MiniLM-L6-v2` |
+| Vector Store        | FAISS (Persistent)                       |
+| Audio Transcription | OpenAI Whisper                           |
+| Frontend            | React + Tailwind                         |
 
 How It Works
 
+User uploads data or provides a link.
 
-User uploads data → Documents, URL, YouTube link, audio, or image.
+Text is extracted (OCR / parsing / transcription depending on input type).
 
-
-Text is extracted and embedded into vector representation.
-
-
-Embeddings are stored in FAISS vector database for retrieval.
-
+Text is converted into embeddings and stored in FAISS.
 
 When the user asks a question:
 
+Relevant text chunks are retrieved using similarity search.
 
-Relevant text chunks are retrieved from the vector store.
+The LLM generates a final answer using the retrieved context.
 
+If an image was uploaded, the system switches to vision + language inference.
 
-The LLM generates a final answer using both the retrieved context and the question.
-
-
-
-
-If an image was uploaded, the model performs Vision + Text reasoning.
-
-
-
-Project Folder Structure
-project/
-│── backend/
-│   ├── app.py                # Flask backend with RAG + vision support
-│   ├── uploads/              # Uploaded files stored here
-│   ├── faiss_index/          # Persistent vector database
+Project Structure
+backend/
+│ app.py
+│ uploads/
+│ faiss_index/     # persistent memory
 │
-└── frontend/
-    ├── src/
-    │   └── Chatbot.jsx       # React UI for chatting and uploading
-    └── package.json
+frontend/
+│ src/
+│   Chatbot.jsx
+│
+
+Setup
+Backend
+ cd backend
+ pip install -r requirements.txt
+ python app.py
+
+ Runs at http://localhost:8000
+
+Frontend
+ cd frontend
+ npm install
+ npm run dev
+Runs at http://localhost:5173
+
+Example Use Flow
+
+Upload a PDF/Docx of medical guidelines.
+
+Paste a YouTube lecture link.
+
+Upload an image like a medical scan.
+
+Ask:
+
+Summarize the treatment recommendations mentioned in the document.
 
 
-Run the Backend
-cd backend
-pip install -r requirements.txt
-python app.py
+Then ask:
 
-Backend runs at:
-http://localhost:8000
+Describe what is shown in the uploaded image.
 
+Future Enhancements
 
-Run the Frontend
-cd frontend
-npm install
-npm run dev
+Conversation memory across sessions
 
-Frontend runs at:
-http://localhost:5173
+Embedding cleanup and deletion UI
 
-
-Example Usage
-
-
-Upload a PDF or DOCX file.
-
-
-Upload a YouTube link to add its transcript.
-
-
-Speak or upload audio; it will be transcribed.
-
-
-Upload an image, then ask:
-What is happening in this picture?
-
-
-
-Ask any question based on stored knowledge:
-Summarize the document I uploaded.
-
-
-
-
-Future Improvements
-
-
-Multi-user session-based memory.
-
-
-UI improvements for document preview.
-
-
-Support for more embedding models and vector stores.
-
-
-Fine-grained memory deletion & cleanup.
-
-
-
-Credits
-Developed by Susobhan Akhuli
-Using Groq LLM, LangChain, Whisper, FAISS, and React.
-
-If you want, I can now:
-✅ Generate a demo video script
-✅ Create screenshots section
-✅ Write a LinkedIn post to showcase this project
+PDF viewer inside the frontend
