@@ -1,4 +1,5 @@
-<img width="1906" height="894" alt="image" src="https://github.com/user-attachments/assets/dc247732-e80d-423a-880f-ec97c8338764" />
+<img width="1919" height="897" alt="image" src="https://github.com/user-attachments/assets/fd123225-75e8-4a06-b02e-cd54d84cb3a3" />
+
 
 Multimodal RAG Chatbot
 
